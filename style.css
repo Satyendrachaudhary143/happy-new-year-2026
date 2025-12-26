@@ -1,0 +1,497 @@
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
+
+body{
+  background:radial-gradient(circle at bottom,#020024,#04044d,#000);
+  color:#fff;
+  overflow-x:hidden;
+}
+
+/* ===== MOON + STARS (FIXED BACKGROUND) ===== */
+.moon-wrap{
+  position:fixed;
+  top:18%;
+  left:50%;
+  transform:translateX(-50%);
+   width:390px;
+  height:390px;
+  pointer-events:none;
+  z-index:0;
+  display:none;
+}
+
+.moon{
+  position:absolute;
+  inset:40px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, #fff, #eee 40%, #ccc 65%, #aaa 80%);
+  box-shadow:
+    0 0 30px rgba(255,255,255,.9),
+    0 0 80px rgba(255,255,255,.7),
+    0 0 160px rgba(255,255,255,.35),
+    inset -18px -18px 25px rgba(0,0,0,.25);
+}
+
+
+
+/* STARS AROUND MOON */
+.star{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:white;
+  border-radius:50%;
+  opacity:.9;
+  box-shadow:
+    0 0 6px rgba(255,255,255,.9),
+    0 0 14px rgba(255,255,255,.6);
+  animation:twinkle 2.8s infinite ease-in-out;
+}
+
+
+@keyframes twinkle{
+  0%,100%{opacity:.3}
+  50%{opacity:1}
+}
+
+/* ===== CANVAS ===== */
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+}
+
+/* ===== APP WRAPPER ===== */
+.app{position:relative;z-index:1}
+
+/* ===== SHAKE ===== */
+.shake{animation:shake .35s}
+@keyframes shake{
+  0%{transform:translate(0)}
+  25%{transform:translate(-6px,4px)}
+  50%{transform:translate(6px,-4px)}
+  75%{transform:translate(-4px,-6px)}
+  100%{transform:translate(0)}
+}
+
+/* ===== SECTIONS ===== */
+.section{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:40px 15px;
+}
+
+/* ===== ROCKET ===== */
+.rocket{
+  width:60px;height:140px;
+  background:linear-gradient(#ff3c00,#ffcc00);
+  border-radius:30px 30px 10px 10px;
+  box-shadow:0 0 30px orange;
+  animation:ignite 1.2s infinite;
+  cursor:pointer;
+}
+@keyframes ignite{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+
+.rocket-text{
+  margin-top:12px;
+  font-size:.95rem;
+  opacity:.9;
+}
+
+/* ===== TEXT ===== */
+.scene{perspective:1200px}
+.text3d{
+  transform-style:preserve-3d;
+  animation:rotate3d 10s ease-in-out infinite;
+}
+.text3d div{
+  font-size:clamp(3rem,8vw,6rem);
+  font-weight:900;
+  letter-spacing:8px;
+  margin:12px 0;
+  color:#ffd700;
+  text-shadow:0 2px 0 #d1b100,0 6px 20px rgba(0,0,0,.9);
+}
+.year{color:#ffb703}
+
+.react{animation:pulse .6s}
+@keyframes pulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+@keyframes rotate3d{
+  0%{transform:rotateX(0) rotateY(0)}
+  50%{transform:rotateX(18deg) rotateY(-18deg)}
+  100%{transform:rotateX(0) rotateY(0)}
+}
+
+/* ===== TIMER ===== */
+.timer{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin:25px 0 10px;
+}
+.box{
+  min-width:85px;
+  padding:14px 16px;
+  border-radius:14px;
+
+  background:linear-gradient(
+    145deg,
+    rgba(120,90,0,.45),   /* dark gold */
+    rgba(0,0,0,.75)      /* deep black */
+  );
+
+  box-shadow:
+    inset 0 0 12px rgba(255,215,0,.15),
+    0 10px 28px rgba(0,0,0,.75);
+}
+
+.box h2{
+  color:#e6b800; /* dark gold */
+  text-shadow:
+    0 0 8px rgba(230,184,0,.6),
+    0 0 18px rgba(0,0,0,.8);
+}
+.box span{
+  display:block;
+  font-size:.75rem;
+  margin-top:4px;
+  color:#c9a227;   /* muted gold */
+  opacity:.9;
+}
+
+
+/* ===== SHAYARI ===== */
+/* ===== 3D SHAYARI TEXT ===== */
+.shayari{
+  margin-top:10px;
+
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:1px;
+  text-align:center;
+
+  /* base color */
+  color:#e6b800;
+
+  /* 3D depth effect */
+  text-shadow:
+    1px 1px 0 #b38f00,
+    2px 2px 0 #8c6f00,
+    3px 3px 0 #5e4b00,
+    0 0 10px rgba(230,184,0,.6),
+    0 0 20px rgba(0,0,0,.8);
+
+  animation:
+    shayariColor 6s ease-in-out infinite,
+    shayariFloat 4s ease-in-out infinite;
+}
+
+/* color animation */
+@keyframes shayariColor{
+  0%{
+    color:#e6b800;      /* dark gold */
+    text-shadow:
+      1px 1px 0 #b38f00,
+      2px 2px 0 #8c6f00,
+      3px 3px 0 #5e4b00,
+      0 0 10px rgba(230,184,0,.6);
+  }
+  50%{
+    color:#ffcc33;      /* brighter gold */
+    text-shadow:
+      1px 1px 0 #d4aa00,
+      2px 2px 0 #b38f00,
+      3px 3px 0 #8c6f00,
+      0 0 18px rgba(255,204,51,.9);
+  }
+  100%{
+    color:#e6b800;
+    text-shadow:
+      1px 1px 0 #b38f00,
+      2px 2px 0 #8c6f00,
+      3px 3px 0 #5e4b00,
+      0 0 10px rgba(230,184,0,.6);
+  }
+}
+
+/* slight floating for premium feel */
+@keyframes shayariFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+
+
+/* ===== INPUT ===== */
+input,button{
+  width:90%;
+  max-width:340px;
+  padding:12px;
+  border-radius:10px;
+  border:none;
+  margin-top:12px;
+}
+button{
+  background:linear-gradient(135deg,#ffb703,#ff8800);
+  font-weight:700;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  padding:20px;
+  text-align:center;
+  font-size:.8rem;
+  opacity:.7;
+}
+/* ===== LETTER BY LETTER DROP ===== */
+.text3d{
+  transform-style:preserve-3d;
+}
+/* ===== LETTER DROP ANIMATION ===== */
+.letter{
+  display:inline-block;
+  font-size:clamp(3rem,8vw,6rem);
+  font-weight:900;
+  letter-spacing:8px;
+  color:#ffd700;
+  text-shadow:0 2px 0 #d1b100,0 6px 20px rgba(0,0,0,.9);
+
+  opacity:0;
+  transform:translateY(-140px);
+  animation:letterDrop .7s ease-out forwards;
+}
+
+.letter.year{
+  color:#ffb703;
+}
+
+.line{
+  display:block;      /* 👈 NEW LINE */
+  line-height:1.1;
+}
+
+.space{
+  width:26px;
+  display:inline-block;
+}
+
+@keyframes letterDrop{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+
+
+
+
+/* ===== GIFT BOX ===== */
+.gift-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  cursor:pointer;
+  gap:10px;
+}
+
+.gift-top-text{
+  font-size:1.05rem;
+  font-weight:600;
+  color:#ffd700;
+  text-shadow:0 0 8px rgba(255,215,0,.7);
+}
+
+.gift{
+  width:120px;
+  height:120px;
+  margin: 20px 0;
+  background:
+    linear-gradient(135deg,#ff4d4d,#ff0000);
+  border-radius:12px;
+  position:relative;
+  box-shadow:
+    0 0 25px rgba(255,0,0,.6),
+    0 0 60px rgba(255,0,0,.4);
+  animation:giftPulse 1.6s infinite;
+}
+
+/* ribbon */
+.gift::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(to right,
+      transparent 42%,
+      #ffd700 42%,
+      #ffd700 58%,
+      transparent 58%),
+    linear-gradient(to bottom,
+      transparent 42%,
+      #ffd700 42%,
+      #ffd700 58%,
+      transparent 58%);
+}
+
+/* bow */
+.gift::after{
+  content:"🎀";
+  position:absolute;
+  top:-26px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:32px;
+}
+
+@keyframes giftPulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+}
+
+.gift-text{
+  margin-top:8px;
+  font-size:.95rem;
+  opacity:.9;
+  text-align:center;
+}
+
+/* ===== FOOTER DESIGN ===== */
+.site-footer{
+  width:100%;
+  padding:30px 15px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.footer-card{
+  background:linear-gradient(
+    145deg,
+    rgba(255,215,0,.15),
+    rgba(0,0,0,.65)
+  );
+  border-radius:18px;
+  padding:18px 26px;
+  text-align:center;
+  backdrop-filter:blur(8px);
+
+  box-shadow:
+    inset 0 0 12px rgba(255,215,0,.15),
+    0 12px 30px rgba(0,0,0,.75);
+
+  animation:footerGlow 4s ease-in-out infinite;
+}
+
+@keyframes footerGlow{
+  0%,100%{
+    box-shadow:
+      inset 0 0 12px rgba(255,215,0,.15),
+      0 12px 30px rgba(0,0,0,.75);
+  }
+  50%{
+    box-shadow:
+      inset 0 0 18px rgba(255,215,0,.35),
+      0 12px 45px rgba(255,215,0,.35);
+  }
+}
+
+.footer-title{
+  font-size:.95rem;
+  color:#f5d76e;
+  margin-bottom:6px;
+  letter-spacing:.5px;
+}
+
+.footer-title span{
+  font-weight:700;
+  color:#ffd700;
+  text-shadow:0 0 8px rgba(255,215,0,.7);
+}
+
+.footer-link{
+  font-size:.85rem;
+  color:#ddd;
+}
+
+.footer-link a{
+  color:#ffcc33;
+  text-decoration:none;
+  font-weight:600;
+  transition:.3s;
+}
+
+.footer-link a:hover{
+  color:#fff;
+  text-shadow:0 0 10px rgba(255,215,0,.9);
+}
+
+/* ===== FULL SCREEN STAR FIELD ===== */
+.screen-stars{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-0; /* content ke peeche, canvas ke upar */
+  animation:starRotate 120s linear infinite;
+}
+
+/* single star */
+.s-star{
+  position:absolute;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:white;
+  box-shadow:
+    0 0 6px rgba(255,255,255,.9),
+    0 0 14px rgba(255,215,0,.6);
+  opacity:.8;
+
+  animation:
+    starBlink 2.5s infinite ease-in-out,
+    starDrift 8s infinite alternate ease-in-out;
+}
+
+/* RANDOM POSITIONS (4 sides + center spread) */
+.s-star:nth-child(1){top:5%;left:10%}
+.s-star:nth-child(2){top:12%;right:18%}
+.s-star:nth-child(3){top:30%;left:5%}
+.s-star:nth-child(4){top:45%;right:6%}
+.s-star:nth-child(5){top:65%;left:12%}
+.s-star:nth-child(6){bottom:8%;right:20%}
+.s-star:nth-child(7){bottom:15%;left:35%}
+.s-star:nth-child(8){bottom:30%;right:40%}
+.s-star:nth-child(9){top:55%;left:50%}
+.s-star:nth-child(10){top:20%;left:70%}
+.s-star:nth-child(11){bottom:45%;right:60%}
+.s-star:nth-child(12){top:75%;left:80%}
+
+/* blink */
+@keyframes starBlink{
+  0%,100%{opacity:.25}
+  50%{opacity:1}
+}
+
+/* small movement */
+@keyframes starDrift{
+  from{transform:translate(0,0)}
+  to{transform:translate(8px,-8px)}
+}
+
+/* very slow rotation */
+@keyframes starRotate{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+

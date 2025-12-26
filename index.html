@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy New Year 🎆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+<!-- 🌌 FULL SCREEN STARS -->
+<div class="screen-stars" id="screenStars"></div>
+
+
+<!-- 🌕 MOON + STARS -->
+<div class="moon-wrap" id="moonWrap">
+  <div class="moon"></div>
+  <!-- stars -->
+ <div class="star" style="top:20px;left:80px"></div>
+<div class="star" style="top:60px;right:60px"></div>
+<div class="star" style="top:120px;left:20px"></div>
+<div class="star" style="top:200px;right:40px"></div>
+<div class="star" style="top:300px;left:100px"></div>
+
+</div>
+
+<canvas id="canvas"></canvas>
+
+<div class="app" id="app">
+
+<section class="section" id="start">
+  
+ <div class="gift-wrap" onclick="startShow()">
+
+  <div class="gift-top-text">
+    👇 यहाँ क्लिक करो
+  </div>
+
+  <div class="gift"></div>
+
+  <div class="gift-text" id="giftText">
+    <b>Satyendra Chaudhary</b> ने आपके लिए कुछ भेजा है 🎁
+  </div>
+
+</div>
+
+</section>
+
+<section class="section" id="celebrate" style="display:none">
+
+  <div class="scene">
+  <div class="text3d" id="hnyText"></div>
+</div>
+
+
+  <div class="timer">
+    <div class="box"><h2 id="d">0</h2><span>Days</span></div>
+    <div class="box"><h2 id="h">0</h2><span>Hours</span></div>
+    <div class="box"><h2 id="m">0</h2><span>Minutes</span></div>
+    <div class="box"><h2 id="s">0</h2><span>Seconds</span></div>
+  </div>
+
+  <div class="shayari">
+    नया साल नई रोशनी लाए,<br>
+    हर अधूरा सपना पूरा हो जाए 
+  </div>
+
+  <input id="name" placeholder="अपना नाम लिखें">
+  <button onclick="share()">Share Wish</button>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-card">
+    <p class="footer-title">
+      Developed by <span>Satyendra Chaudhary</span>
+    </p>
+
+    <p class="footer-link">
+      🌐 Email :
+      <a href="mailto:satyendrachaudhary38@gmail.com" target="_blank">
+        satyendrachaudhary38@gmail.com
+      </a>
+    </p>
+  </div>
+</footer>
+
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
