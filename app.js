@@ -210,13 +210,12 @@ for (let i = 0; i < STAR_COUNT; i++) {
    WHATSAPP SHARE
 ===================================================== */
 function share() {
-    const name = getName();
+    const sname = getName();
+    const name = sname.toUpperCase();
     const baseUrl = window.location.origin + window.location.pathname;
     const link = `${baseUrl}?name=${encodeURIComponent(name)}`;
 
-    const message = `${name} ने आपके लिए कुछ भेजा है 🎁
-
-👉 ${link}`;
+    const message = `${name} ने आपके लिए कुछ भेजा है ${link}`;
 
     window.open(
         `https://wa.me/?text=${encodeURIComponent(message)}`,
