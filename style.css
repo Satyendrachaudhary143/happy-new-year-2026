@@ -119,7 +119,7 @@ canvas{
   animation:rotate3d 10s ease-in-out infinite;
 }
 .text3d div{
-  font-size:clamp(7rem,10vw,10rem);
+  font-size:clamp(10rem,15vw,15rem);
   font-weight:900;
   letter-spacing:8px;
   margin:12px 0;
