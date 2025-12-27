@@ -2,10 +2,17 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
 
 body{
-  background:radial-gradient(circle at bottom,#020024,#04044d,#000);
+  background:
+    radial-gradient(circle at top,
+      #3b0764,
+      #1e1b4b 35%,
+      #020024 70%,
+      #000 100%
+    );
   color:#fff;
   overflow-x:hidden;
 }
+
 
 /* ===== MOON + STARS (FIXED BACKGROUND) ===== */
 .moon-wrap{
@@ -261,7 +268,7 @@ footer{
 /* ===== LETTER DROP ANIMATION ===== */
 .letter{
   display:inline-block;
-  font-size:clamp(3rem,8vw,6rem);
+  font-size:clamp(5rem,8vw,6rem);
   font-weight:900;
   letter-spacing:8px;
   color:#ffd700;
@@ -494,4 +501,96 @@ footer{
   from{transform:rotate(0deg)}
   to{transform:rotate(360deg)}
 }
+
+/* ===== GIFT STATUS TEXT ===== */
+.gift-status{
+  margin-top:12px;
+  font-size:1rem;
+  font-weight:700;
+  color:#ffeb3b;
+  text-shadow:
+    0 0 8px rgba(255,235,59,.8),
+    0 0 20px rgba(0,0,0,.9);
+  min-height:28px;
+  animation:fadeIn .6s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ===== FLASH EFFECT ===== */
+.flash{
+  position:fixed;
+  inset:0;
+  background:white;
+  z-index:9999;
+  animation:flashAnim .5s ease;
+  pointer-events:none;
+}
+
+@keyframes flashAnim{
+  0%{opacity:0}
+  40%{opacity:1}
+  100%{opacity:0}
+}
+
+/* ===== FUNNY MESSAGE MODERN UI ===== */
+.funny-box{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:200px;
+  margin-top:20px;
+}
+
+.funny-card{
+  background:
+    radial-gradient(circle at top,
+      #3b0764,
+      #1e1b4b 35%,
+      #020024 70%,
+      #000 100%
+    );
+  color:#fff;
+  border-radius:20px;
+  padding:28px 26px;
+  max-width:320px;
+  width:90%;
+  text-align:center;
+
+  box-shadow:
+    0 0 25px rgba(255,215,0,.25),
+    0 0 60px rgba(0,0,0,.9);
+
+  animation:popIn .6s ease;
+}
+
+@keyframes popIn{
+  from{transform:scale(.85);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+.funny-emoji{
+  font-size:3.2rem;
+  margin-bottom:12px;
+  animation:bounceEmoji 1.6s infinite;
+}
+
+@keyframes bounceEmoji{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+
+.funny-text{
+  font-size:1.05rem;
+  font-weight:700;
+  line-height:1.5;
+  color:#ffeb3b;
+  text-shadow:
+    0 0 10px rgba(255,235,59,.8),
+    0 0 20px rgba(0,0,0,.9);
+}
+
 

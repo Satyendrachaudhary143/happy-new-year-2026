@@ -3,20 +3,32 @@
 ===================================================== */
 const inputName = document.getElementById("name");
 const giftText = document.getElementById("giftText");
+
+const start = document.getElementById("start");
+const celebrate = document.getElementById("celebrate");
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+
 const starContainer = document.getElementById("screenStars");
 const hnyText = document.getElementById("hnyText");
+const moonWrap = document.getElementById("moonWrap");
+
+const d = document.getElementById("d");
+const h = document.getElementById("h");
+const m = document.getElementById("m");
+const s = document.getElementById("s");
 
 /* =====================================================
-   UTILITY FUNCTIONS
+   UTIL
 ===================================================== */
 function getName() {
-    return inputName?.value?.trim() || "Satyendra Chaudhary";
+    const name = inputName?.value?.trim();
+    return name && name.length >= 2 ? name : "Satyendra Chaudhary";
 }
 
 /* =====================================================
-   GET NAME FROM URL (AUTO FILL)
+   AUTO NAME FROM URL
 ===================================================== */
 (() => {
     const params = new URLSearchParams(window.location.search);
@@ -31,18 +43,39 @@ function getName() {
 /* =====================================================
    COUNTDOWN TIMER
 ===================================================== */
-const NEW_YEAR = new Date("Jan 1, 2026").getTime();
+const NEW_YEAR = new Date("Jan 1, 2026 00:00:00").getTime();
 
-setInterval(() => {
-    const diff = NEW_YEAR - Date.now();
+const timerInterval = setInterval(() => {
+    const now = Date.now();
+    const diff = NEW_YEAR - now;
 
+    // 🎆 NEW YEAR ARRIVED
+    if (diff <= 0) {
+        clearInterval(timerInterval);
+
+        // hide timer
+        document.querySelector(".timer").style.display = "none";
+
+        // show celebration text
+        document.getElementById("newYearLive").style.display = "block";
+
+        // optional: change shayari
+        const shayari = document.querySelector(".shayari");
+        if (shayari) {
+            shayari.innerHTML =
+                "🎆 नया साल आ गया है 🎆<br>खुशियाँ आपके साथ रहें";
+        }
+
+        return;
+    }
+
+    // normal countdown
     d.innerText = Math.floor(diff / 86400000);
     h.innerText = Math.floor(diff / 3600000) % 24;
     m.innerText = Math.floor(diff / 60000) % 60;
     s.innerText = Math.floor(diff / 1000) % 60;
-
-    giftText.innerHTML = `<b>${getName()}</b> ने आपके लिए कुछ भेजा है 🎁`;
 }, 1000);
+
 
 /* =====================================================
    CANVAS SETUP
@@ -55,37 +88,84 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
 /* =====================================================
-   BACKGROUND STARS (CANVAS)
+   BACKGROUND STARS
 ===================================================== */
-const bgStars = Array.from({ length: 200 }, () => ({
+const bgStars = Array.from({ length: 180 }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: Math.random() * 3 + 1.5,
-    speed: Math.random() * 0.8 + 0.3
+    r: Math.random() * 2 + 1,
+    speed: Math.random() * 0.6 + 0.2
 }));
+
+/* =====================================================
+   🔊 FIREWORK SOUND (5 SECOND SAFE)
+===================================================== */
+let baseFireworkSound;
+let soundEnabled = false;
+let activeSounds = 0;
+
+const SOUND_DURATION = 5000;      // 5 seconds
+const MAX_SOUNDS = 3;
+
+function initSound() {
+    if (soundEnabled) return;
+
+    baseFireworkSound = new Audio("firework.mp3"); // 🔥 file same folder me
+    baseFireworkSound.volume = 0.6;
+    baseFireworkSound.preload = "auto";
+
+    soundEnabled = true;
+}
+
+function playFireworkSound() {
+    if (!soundEnabled) return;
+    if (activeSounds >= MAX_SOUNDS) return;
+
+    const sound = baseFireworkSound.cloneNode();
+    sound.volume = 0.6;
+    activeSounds++;
+
+    sound.play().catch(() => {
+        activeSounds--;
+    });
+
+    // ⏱️ stop sound after 5 seconds
+    setTimeout(() => {
+        sound.pause();
+        sound.currentTime = 0;
+        activeSounds--;
+    }, SOUND_DURATION);
+}
 
 /* =====================================================
    FIREWORK SYSTEM
 ===================================================== */
 let rockets = [];
 let particles = [];
+
 const GRAVITY = 0.18;
+const MAX_PARTICLES = 1200;
 
 function launchRocket() {
     rockets.push({
         x: Math.random() * canvas.width,
         y: canvas.height,
         vy: -9,
-        targetY: canvas.height / 3
+        targetY: canvas.height * 0.35
     });
 }
 
 function explode(x, y) {
-    const app = document.getElementById("app");
-    app.classList.add("shake");
-    setTimeout(() => app.classList.remove("shake"), 300);
+    if (particles.length > MAX_PARTICLES) return;
 
-    for (let i = 0; i < 120; i++) {
+    playFireworkSound(); // 🔊 SOUND HERE
+
+    document.getElementById("app").classList.add("shake");
+    setTimeout(() => {
+        document.getElementById("app").classList.remove("shake");
+    }, 300);
+
+    for (let i = 0; i < 110; i++) {
         particles.push({
             x,
             y,
@@ -97,20 +177,24 @@ function explode(x, y) {
     }
 }
 
+/* =====================================================
+   ANIMATION LOOP
+===================================================== */
 function animate() {
     ctx.fillStyle = "rgba(0,0,0,.3)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // stars
-    bgStars.forEach(star => {
+    for (const star of bgStars) {
         star.y += star.speed;
         if (star.y > canvas.height) star.y = 0;
         ctx.fillStyle = "#fff";
         ctx.fillRect(star.x, star.y, star.r, star.r);
-    });
+    }
 
     // rockets
-    rockets.forEach((r, i) => {
+    for (let i = rockets.length - 1; i >= 0; i--) {
+        const r = rockets[i];
         r.y += r.vy;
         ctx.fillRect(r.x, r.y, 3, 10);
 
@@ -118,10 +202,11 @@ function animate() {
             explode(r.x, r.y);
             rockets.splice(i, 1);
         }
-    });
+    }
 
     // particles
-    particles.forEach((p, i) => {
+    for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
         p.vy += GRAVITY;
         p.x += p.vx;
         p.y += p.vy;
@@ -133,31 +218,98 @@ function animate() {
         if (p.life <= 0 || p.y > canvas.height) {
             particles.splice(i, 1);
         }
-    });
+    }
 
     requestAnimationFrame(animate);
 }
 
 /* =====================================================
-   START SHOW (GIFT CLICK)
+   FIREWORK CONTROLLER
 ===================================================== */
-function startShow() {
-    start.style.display = "none";
-    celebrate.style.display = "flex";
-    document.getElementById("moonWrap").style.display = "block";
+let fireworksStarted = false;
 
-    playLetterAnimation();
+function startFireworks() {
+    if (fireworksStarted) return;
+    fireworksStarted = true;
+
     setInterval(launchRocket, 900);
     requestAnimationFrame(animate);
 }
 
 /* =====================================================
-   HAPPY NEW YEAR LETTER ANIMATION
+   START SHOW (🎁 CLICK)
+===================================================== */
+function startShow() {
+    initSound(); // 🔊 unlock sound
+
+    const giftBox = document.querySelector(".gift-wrap");
+    const funnyBox = document.getElementById("funnyBox");
+    const funnyText = document.getElementById("funnyText");
+    const funnyEmoji = document.getElementById("funnyEmoji");
+
+    // prevent multiple click
+    giftBox.style.pointerEvents = "none";
+
+    /* STEP 1: Gift screen hide */
+    giftBox.style.display = "none";
+    funnyBox.style.display = "flex";
+
+    /* FUNNY CONTENT */
+    const funnyMessages = [
+        { emoji: "😂", text: "इतनी जल्दी क्या है जी, गिफ्ट भागा नहीं जा रहा है।" },
+        { emoji: "😜", text: "ज़रा सब्र रखो जी, आपका गिफ्ट तैयार किया जा रहा है।" },
+        { emoji: "🥳", text: "इतना इंतज़ार किया है तो थोड़ा और सही।" },
+        { emoji: "🎁", text: "गिफ्ट खुलने से पहले suspense ज़रूरी है।" },
+        { emoji: "🔥", text: "तैयारी चल रही है, पटाखे गरम हो रहे हैं।" },
+        { emoji: "😆", text: "अरे, अब मुस्कुरा भी दो 😄 गिफ्ट खुल गया है!" }
+    ];
+
+
+    let index = 0;
+
+    funnyEmoji.innerText = funnyMessages[0].emoji;
+    funnyText.innerText = funnyMessages[0].text;
+
+    /* STEP 2: Rotate funny messages for 1 MINUTE */
+    const interval = setInterval(() => {
+        index = (index + 1) % funnyMessages.length;
+        funnyEmoji.innerText = funnyMessages[index].emoji;
+        funnyText.innerText = funnyMessages[index].text;
+    }, 5000); // every 4 sec
+
+    /* STEP 3: After 1 minute → Celebration */
+    setTimeout(() => {
+        clearInterval(interval);
+
+        funnyBox.style.display = "none";
+
+        // flash
+        const flash = document.createElement("div");
+        flash.className = "flash";
+        document.body.appendChild(flash);
+        setTimeout(() => flash.remove(), 600);
+
+    // show celebration
+        start.style.display = "none";
+        celebrate.style.display = "flex";
+        moonWrap.style.display = "block";
+
+        playLetterAnimation();
+        startFireworks();
+
+    }, 30000); // ⏱️ 1 minute
+}
+
+
+
+
+/* =====================================================
+   HAPPY NEW YEAR TEXT
 ===================================================== */
 const HNY_LINES = ["HAPPY", "NEW", "YEAR"];
-const LETTER_DELAY = 700;
+const LETTER_DELAY = 120;
 const LINE_DELAY = 300;
-const RESTART_DELAY = 60000;
+const RESTART_DELAY = 2 * 60 * 1000;
 
 function playLetterAnimation() {
     hnyText.innerHTML = "";
@@ -176,7 +328,6 @@ function playLetterAnimation() {
                 span.textContent = char;
                 line.appendChild(span);
             }, delay);
-
             delay += LETTER_DELAY;
         });
 
@@ -187,22 +338,19 @@ function playLetterAnimation() {
 }
 
 /* =====================================================
-   FULL SCREEN STARS (20–50 AUTO)
+   FULL SCREEN STARS (DOM)
 ===================================================== */
-const STAR_COUNT = Math.floor(Math.random() * 200) + 20;
+const STAR_COUNT = Math.floor(Math.random() * 40) + 20;
 
 for (let i = 0; i < STAR_COUNT; i++) {
     const star = document.createElement("span");
     star.className = "s-star";
-
     star.style.top = Math.random() * 100 + "%";
     star.style.left = Math.random() * 100 + "%";
-
     const size = Math.random() * 3 + 2;
     star.style.width = size + "px";
     star.style.height = size + "px";
     star.style.animationDelay = Math.random() * 5 + "s";
-
     starContainer.appendChild(star);
 }
 
@@ -210,12 +358,13 @@ for (let i = 0; i < STAR_COUNT; i++) {
    WHATSAPP SHARE
 ===================================================== */
 function share() {
-    const sname = getName();
-    const name = sname.toUpperCase();
+    const name = getName().toUpperCase();
     const baseUrl = window.location.origin + window.location.pathname;
     const link = `${baseUrl}?name=${encodeURIComponent(name)}`;
 
-    const message = `${name} ने आपके लिए कुछ भेजा है ${link}`;
+    const message = `${name} ने आपके लिए कुछ खास भेजा है 😄
+👇 यहाँ क्लिक करें
+${link}`;
 
     window.open(
         `https://wa.me/?text=${encodeURIComponent(message)}`,
